@@ -2,9 +2,13 @@
 
 if ( !defined('WP_UNINSTALL_PLUGIN') )  exit;
 
-include dirname(__FILE__).'/check_field.php';
-if(!Check_Fiels::check('wert9_views')) return; //test field
+include dirname(__FILE__).'/check_table.php';
+
+$table_name = "wert9_post_views";
+if(!Check_Table::check($table_name)) return;
 
 global $wpdb;
-$query = "ALTER TABLE $wpdb->posts DROP wert9_views";
+$table_name = $wpdb->get_blog_prefix() . $table_name;
+$query = "DROP TABLE IF EXISTS {$table_name};";
 $wpdb->query($query);
+delete_option("wert9_counts_posts");
